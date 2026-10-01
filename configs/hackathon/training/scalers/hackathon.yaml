@@ -1,0 +1,35 @@
+# Loss scalers for the hackathon dataset. Replaces the packaged `training/scalers/global` group, which also
+# defines tendency/NaN-mask scalers (they need tendency statistics this dataset does not have) and weights
+# for variables it does not contain (w, cp).
+datasets:
+  data:
+    # Per-variable loss weights, keyed by variable name or by pressure-level group (q, t, u, v, z).
+    # Starting point: the AIFS weights shipped with anemoi-training. Variables not listed get `default`.
+    general_variable:
+      _target_: anemoi.training.losses.scalers.GeneralVariableLossScaler
+      weights:
+        default: 1
+        q: 0.6
+        t: 6
+        u: 0.8
+        v: 0.5
+        z: 12
+        sp: 10
+        10u: 0.1
+        10v: 0.1
+        2d: 0.5
+        tp: 0.025
+    # Pressure-level fields get a weight that grows linearly with pressure (more weight near the surface).
+    # Uses the `pl` variable group defined in hackathon_forecast.yaml (training.variable_groups).
+    pressure_level:
+      _target_: anemoi.training.losses.scalers.ReluVariableLevelScaler
+      group: pl
+      y_intercept: 0.2
+      slope: 0.001
+    # Area weight of each grid point, from the graph (O96 points near the poles cover less area)
+    node_weights:
+      _target_: anemoi.training.losses.scalers.GraphNodeAttributeScaler
+      nodes_attribute_name: area_weight
+      norm: unit-sum
+    time_steps:
+      _target_: anemoi.training.losses.scalers.UniformTimeStepScaler

@@ -1,0 +1,26 @@
+# anemoi-inference config for the hackathon notebook. The notebook sets the three environment variables below
+# and overrides `date` and `lead_time` on the command line:
+#   anemoi-inference run configs/model-inference.yaml date=2015-10-25T06:00:00 lead_time=48
+#
+# Model checkpoint to use for inference.
+checkpoint: ${oc.env:ANEMOI_CHECKPOINT}
+
+# Latest input time.
+date: "2015-10-25T06:00:00"
+# Hours to forecast, a multiple of the model time step (6h)
+lead_time: 48
+
+# Initial conditions are read from an anemoi dataset.
+input:
+  dataset: ${oc.env:ANEMOI_EVAL_DATASET}
+
+output:
+  netcdf:
+    path: ${oc.env:ANEMOI_OUTPUT}/forecast.nc
+    # variables written to the file: prognostic ones and the diagnostic `tp`
+    variables: [2t, msl, 10u, 10v, tp, z_500, t_850]
+
+write_initial_state: false # the initial state is already in the dataset
+device: cuda
+precision: "32"
+allow_nans: false

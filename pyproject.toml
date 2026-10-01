@@ -1,0 +1,93 @@
+[project]
+name = "aif-training-ml-for-esm-and-anemoi"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+authors = []
+
+## Required Python version ##
+requires-python = ">=3.12, <3.13"
+
+## Core dependencies — shared across all modules ##
+dependencies = [
+    "cartopy>=0.25.0",
+    "dask>=2026.1.2",
+    "ipykernel>=7.2.0",
+    "jupyterlab>=4.5.5",
+    "matplotlib>=3.10.8",
+    "notebook>=7.5.4",
+    "numpy>=2.4.2",
+    "packaging>=26.0",
+    "pandas>=2.2.0,<3",
+    "xarray>=2026.2.0",
+    "zarr>=2.18.7",
+]
+
+## Dependency groups ##
+
+[dependency-groups]
+
+# Module 0 — Earth science data download and ML preprocessing (ERA5/CERRA CDS API, GRIB reading, regridding)
+module-00 = [
+    "cdsapi>=0.7.7",
+    "cfgrib>=0.9.15.1",
+    "cftime>=1.6.5",
+    "eccodes>=2.47.0",
+    "numcodecs>=0.15.1",
+    "pyresample>=1.35.0",
+]
+
+# Module 1 — Anemoi framework intro: full package stack for smoke tests
+module-01 = [
+    "anemoi-datasets>=0.5.36",
+    "anemoi-graphs>=0.9.3",
+    "anemoi-inference>=0.10.1",
+    "anemoi-models>=0.14.1",
+    "anemoi-registry>=0.3.0",
+    "anemoi-training>=0.12.1",
+    "anemoi-transform>=0.1.26",
+    "anemoi-utils>=0.5.3",
+    "cachetools>=7.1.1",
+    "eccodes>=2.47.0",
+    "ipywidgets>=8.0",
+]
+
+# Module 2 — anemoi-datasets deep dive: dataset creation and reading
+module-02 = [
+    "anemoi-datasets>=0.5.36",
+    "anemoi-transform>=0.1.26",
+    "anemoi-utils>=0.5.3",
+    "cachetools>=7.1.1",
+    "cdsapi>=0.7.7",
+    "eccodes>=2.47.0",
+    "ecmwf-opendata>=0.3.29",
+]
+
+# Modules 3–4 — training and inference notebooks; exact versions of the shared MN5 course environment.
+module-03-04 = [
+    "anemoi-datasets==0.5.36",
+    "anemoi-graphs==0.9.3",
+    "anemoi-inference==0.10.1",
+    "anemoi-models==0.14.1",
+    "anemoi-training==0.12.1",
+    "anemoi-transform==0.3.1",
+    "anemoi-utils==0.5.3",
+    "torch==2.10.0",
+    "torch-geometric==2.7.0",
+    "einops==0.8.2",
+    "hydra-core==1.3.2",
+    "omegaconf==2.3.0",
+    "mlflow-skinny==3.12.0",
+    "eccodes==2.47.0",
+    "eccodeslib==2.46.2.19",
+    "eckitlib==2.0.7.19",
+    "nbclient==0.10.4",
+    "nbconvert==7.17.1",
+]
+
+## uv settings ##
+
+[tool.uv]
+# The course installs one shared environment for every module, so a plain
+# `uv sync` must install all dependency groups (without this it removes them).
+default-groups = "all"

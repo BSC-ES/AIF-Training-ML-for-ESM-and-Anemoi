@@ -1,0 +1,47 @@
+name: cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1
+
+license: CC-BY-4.0
+
+dates:
+  start: 2020-01-01T00:00:00
+  end: 2020-01-15T18:00:00
+  frequency: 6h
+
+build:
+  group_by: daily
+
+statistics:
+  allow_nans: true
+
+input:
+  join:
+  # grib containing surface variables
+  - grib:
+      path: data/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_sfc.grib
+  # grib containing pressure level variables
+  - grib:
+      path: data/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_pl.grib
+  # grib containing accumulated variables
+  - accumulate:
+      period: 6h
+      availability:
+        - [0,  "0-6"]
+        - [6,  "0-6"]
+        - [12, "0-6"]
+        - [18, "0-6"]
+      source:
+        grib-index:
+          indexdb: data/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_acc_index.sqlite
+  # constant forcings
+  - constants:
+      param:
+      - cos_latitude
+      - cos_longitude
+      - sin_latitude
+      - sin_longitude
+      - cos_julian_day
+      - cos_local_time
+      - sin_julian_day
+      - sin_local_time
+      - insolation
+      template: ${input.join.0.grib}

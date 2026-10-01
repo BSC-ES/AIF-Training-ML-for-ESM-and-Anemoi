@@ -1,0 +1,64 @@
+# Graph for the hackathon O96 dataset. The same file is used twice:
+#   1. anemoi-graphs create configs/hackathon/graph/hackathon_o96.yaml <graph.pt>
+#   2. as the `graph:` group of hackathon_forecast.yaml -- training then just loads <graph.pt>
+#      (overwrite: false) and only rebuilds from this file if the .pt does not exist.
+# Everything is computed from the dataset and the HEALPix mesh: no downloads, so it runs offline.
+# (The refined icosahedron -- TriNodes + MultiScaleEdges, as in AIFS -- needs the `trimesh` package, which
+# the course environment does not ship. HEALPix gives the same kind of quasi-uniform global mesh.)
+overwrite: false
+
+data: "data"
+hidden: "hidden"
+
+nodes:
+  # Data nodes: the 40,320 O96 points of the training dataset
+  data:
+    node_builder:
+      _target_: anemoi.graphs.nodes.AnemoiDatasetNodes
+      dataset: path/to/output/folder/data/hackathon-ea-an-oper-0001-mars-o96-2010-2014-6h-v1.zarr
+    attributes:
+      area_weight:
+        _target_: anemoi.graphs.nodes.attributes.SphericalAreaWeights
+        norm: unit-max
+        fill_value: 0
+  # Hidden (processor) nodes: HEALPix mesh, 12 * 4**resolution nodes. resolution 4 -> 3,072 nodes, 5 -> 12,288 nodes
+  hidden:
+    node_builder:
+      _target_: anemoi.graphs.nodes.HEALPixNodes
+      resolution: 5
+
+edges:
+  # Encoder: each hidden node gathers information from all data nodes within a radius (cutoff_factor x the
+  # typical hidden-node spacing). Every data node must reach at least one hidden node, otherwise its values
+  # never enter the model: with HEALPix resolution 5 on O96, cutoff_factor 0.6 leaves 1,592 of the 40,320
+  # points out, 0.7 leaves 16, 0.8 leaves none (KNNEdges with k=12 leaves 8).
+  - source_name: data
+    target_name: hidden
+    edge_builders:
+      - _target_: anemoi.graphs.edges.CutOffEdges
+        cutoff_factor: 0.8
+    attributes: &edge_attributes
+      edge_length:
+        _target_: anemoi.graphs.edges.attributes.EdgeLength
+        norm: unit-std
+      edge_dirs:
+        _target_: anemoi.graphs.edges.attributes.EdgeDirection
+        norm: unit-std
+  # Processor: each hidden node is connected to its nearest hidden neighbours. Information travels further
+  # with every processor layer. (HEALPixMultiScaleEdges would add long-range links too, but in anemoi-graphs
+  # 0.9.3 it produces negative edge indices at the HEALPix corner pixels and the build crashes.)
+  - source_name: hidden
+    target_name: hidden
+    edge_builders:
+      - _target_: anemoi.graphs.edges.KNNEdges
+        num_nearest_neighbours: 8
+    attributes: *edge_attributes
+  # Decoder: each data node receives information from its nearest hidden nodes
+  - source_name: hidden
+    target_name: data
+    edge_builders:
+      - _target_: anemoi.graphs.edges.KNNEdges
+        num_nearest_neighbours: 3
+    attributes: *edge_attributes
+
+post_processors: []

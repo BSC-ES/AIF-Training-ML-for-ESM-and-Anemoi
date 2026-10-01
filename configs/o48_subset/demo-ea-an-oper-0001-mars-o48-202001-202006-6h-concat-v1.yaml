@@ -1,0 +1,51 @@
+name: demo-ea-an-oper-0001-mars-o48-202001-202006-6h-concat-v1
+
+description: Time concatenation of 6 monthly O48 subsets (Jan–Jun 2020)
+
+attribution: ECMWF/C3S
+
+licence: CC-BY-4.0
+
+dates:
+  start: '2020-01-01T00:00:00'
+  end: '2020-06-30T18:00:00'
+  frequency: 6h
+
+input:
+  concat:
+    - dates:
+        start: '2020-01-01T00:00:00'
+        end: '2020-01-31T18:00:00'
+        frequency: 6h
+      anemoi_dataset:
+        dataset: data/derived/module-02/demo-ea-an-oper-0001-mars-o48-202001-202001-6h-v1.zarr
+    - dates:
+        start: '2020-02-01T00:00:00'
+        end: '2020-02-29T18:00:00'
+        frequency: 6h
+      anemoi_dataset:
+        dataset: data/derived/module-02/demo-ea-an-oper-0001-mars-o48-202002-202002-6h-v1.zarr
+    - dates:
+        start: '2020-03-01T00:00:00'
+        end: '2020-03-31T18:00:00'
+        frequency: 6h
+      anemoi_dataset:
+        dataset: data/derived/module-02/demo-ea-an-oper-0001-mars-o48-202003-202003-6h-v1.zarr
+    - dates:
+        start: '2020-04-01T00:00:00'
+        end: '2020-04-30T18:00:00'
+        frequency: 6h
+      anemoi_dataset:
+        dataset: data/derived/module-02/demo-ea-an-oper-0001-mars-o48-202004-202004-6h-v1.zarr
+    - dates:
+        start: '2020-05-01T00:00:00'
+        end: '2020-05-31T18:00:00'
+        frequency: 6h
+      anemoi_dataset:
+        dataset: data/derived/module-02/demo-ea-an-oper-0001-mars-o48-202005-202005-6h-v1.zarr
+    - dates:
+        start: '2020-06-01T00:00:00'
+        end: '2020-06-30T18:00:00'
+        frequency: 6h
+      anemoi_dataset:
+        dataset: data/derived/module-02/demo-ea-an-oper-0001-mars-o48-202006-202006-6h-v1.zarr

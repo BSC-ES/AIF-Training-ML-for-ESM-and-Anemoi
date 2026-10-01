@@ -1,0 +1,16 @@
+name: demo-ea-an-oper-0001-mars-o48-202002-202002-6h-v1
+
+description: February subset of demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1
+
+attribution: ECMWF/C3S
+
+licence: CC-BY-4.0
+
+dates:
+  start: '2020-02-01T00:00:00'
+  end: '2020-02-29T18:00:00'
+  frequency: 6h
+
+input:
+  anemoi-dataset:
+    dataset: data/demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1.zarr

@@ -1,0 +1,17 @@
+name: demo-ea-an-oper-0001-mars-o48-202001-202006-6h-wmed-v1
+
+description: Western Mediterranean area crop [N=48, W=-15, S=30, E=22] of demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1
+
+attribution: ECMWF/C3S
+
+licence: CC-BY-4.0
+
+dates:
+  start: '2020-01-01T00:00:00'
+  end: '2020-06-30T18:00:00'
+  frequency: 6h
+
+input:
+  anemoi-dataset:
+    dataset: data/demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1.zarr
+    area: [48, -15, 30, 22]

@@ -1,0 +1,19 @@
+name: demo-ea-an-oper-0001-mars-o48-202001-202006-6h-join-v1
+
+description: Variable join of sfc and pl subsets of O48 (Jan 2020)
+
+attribution: ECMWF/C3S
+
+licence: CC-BY-4.0
+
+dates:
+  start: '2020-01-01T00:00:00'
+  end: '2020-06-30T18:00:00'
+  frequency: 6h
+
+input:
+  join:
+    - anemoi-dataset:
+        dataset: data/derived/module-02/demo-ea-an-oper-0001-mars-o48-202001-202006-6h-sfc-v1.zarr
+    - anemoi-dataset:
+        dataset: data/derived/module-02/demo-ea-an-oper-0001-mars-o48-202001-202006-6h-pl-v1.zarr

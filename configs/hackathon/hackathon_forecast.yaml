@@ -1,0 +1,175 @@
+# Hackathon training config: a deterministic 6h forecaster on the hackathon ERA5 O96 dataset.
+# Only the choices that differ from the anemoi-training defaults are written here; everything else comes
+# from the config groups listed in `defaults` (shipped inside the installed anemoi-training package).
+#
+#   anemoi-training config validate --config-dir configs/hackathon --config-name hackathon_forecast
+#   anemoi-training train           --config-dir configs/hackathon --config-name hackathon_forecast
+defaults:
+  - data: zarr
+  - dataloader: native_grid
+  - diagnostics: evaluation
+  - system: example
+  - model: graphtransformer
+  - task: forecaster
+  - training: single
+  - graph: hackathon_o96 # local file: graph/hackathon_o96.yaml
+  - override training/scalers: hackathon # local file: training/scalers/hackathon.yaml
+  - _self_
+
+config_validation: True
+
+system:
+  input:
+    # the zarr built with configs/hackathon-ea-an-oper-0001-mars-o96-2010-2014-6h-v1.yaml
+    dataset: path/to/output/folder/data/hackathon-ea-an-oper-0001-mars-o96-2010-2014-6h-v1.zarr
+    # the graph built by `anemoi-graphs create` (see scripts/hackathon-training/train_hackathon.sh)
+    graph: path/to/output/folder/training/graphs/hackathon_o96.pt
+  output:
+    root: path/to/output/folder/training/runs
+  hardware:
+    accelerator: gpu
+    num_nodes: 1
+    num_gpus_per_node: 1
+    num_gpus_per_model: 1
+
+data:
+  frequency: 6h
+  datasets:
+    data:
+      # Inputs only: computed from date and position, never predicted
+      forcing:
+        - cos_latitude
+        - cos_longitude
+        - sin_latitude
+        - sin_longitude
+        - cos_julian_day
+        - cos_local_time
+        - sin_julian_day
+        - sin_local_time
+        - insolation
+      # Predicted but not fed back as input: precipitation is an output of the model, not a state
+      diagnostic:
+        - tp
+      processors:
+        normalizer:
+          config:
+            default: mean-std
+            # tp is mostly zeros and strictly positive: scale by std only, so 0 stays 0
+            std:
+              - tp
+            max: []
+            # forcings are already in [-1, 1] or [0, 1]
+            none:
+              - cos_latitude
+              - cos_longitude
+              - sin_latitude
+              - sin_longitude
+              - cos_julian_day
+              - cos_local_time
+              - sin_julian_day
+              - sin_local_time
+              - insolation
+
+dataloader:
+  # e.g. 20 CPUs per GPU: 8 loader workers for training, 4 for validation
+  num_workers:
+    training: 8
+    validation: 4
+    test: 4
+  batch_size:
+    training: 2
+    validation: 2
+    test: 2
+  # Training must stay inside the dates the dataset statistics were computed on, otherwise validation data leaks
+  # into the normalisation. By default anemoi-datasets computes them on the first 80% of a dataset shorter than
+  # 10 years (for 2010-2014: up to the end of 2013). `inspect` does not print the range, read it with
+  # zarr.open("<dataset>.zarr", mode="r").attrs["statistics_end_date"]
+  # 2015 is the held-out year for the final evaluation and is not in the dataset at all.
+  training:
+    datasets:
+      data:
+        start: 2010-01-01
+        end: 2013-12-31
+  validation:
+    datasets:
+      data:
+        start: 2014-01-01
+        end: 2014-12-31
+  test:
+    datasets:
+      data:
+        start: 2014-01-01
+        end: 2014-12-31
+  limit_batches:
+    validation: 20
+
+task:
+  multistep_input: 2 # the model sees t-6h and t to predict t+6h
+  multistep_output: 1
+  timestep: 6h
+  # rollout: during training the model is also run autoregressively for `maximum` steps (feeding its own
+  # predictions back), which improves longer forecasts but costs memory/time linearly. Start with 1.
+  rollout:
+    start: 1
+    maximum: 1
+    epoch_increment: 0
+  validation_rollout: 1
+
+model:
+  num_channels: 256
+  compile: [] # torch.compile adds minutes of startup for a short run
+  processor:
+    num_layers: 8
+    num_chunks: 2
+    num_heads: 8
+    graph_attention_backend: pyg
+  encoder:
+    num_heads: 8
+    graph_attention_backend: pyg
+  decoder:
+    num_heads: 8
+    graph_attention_backend: pyg
+  # precipitation cannot be negative
+  bounding:
+    - _target_: anemoi.models.layers.bounding.ReluBounding
+      variables:
+        - tp
+
+training:
+  precision: 16-mixed
+  max_epochs: null
+  max_steps: 20000 # the job stops at whichever comes first: max_steps or the SLURM time limit
+  optimization:
+    lr: 6.25e-4
+    lr_scheduler:
+      warmup_t: 500
+  variable_groups:
+    datasets:
+      data:
+        default: sfc
+        pl:
+          param: [q, t, u, v, z]
+  metrics:
+    datasets:
+      data: [z_500, t_850, u_850, v_850, 2t, msl, tp]
+
+diagnostics:
+  plot:
+    callbacks: []
+  enable_progress_bar: False # tqdm output is unreadable in SLURM log files
+  checkpoint:
+    every_n_minutes:
+      save_frequency: 20
+      num_models_saved: 1
+    every_n_epochs:
+      save_frequency: 1
+      num_models_saved: 1
+  log:
+    interval: 50
+    mlflow:
+      enabled: True
+      offline: True # compute nodes have no internet: logs are written under system.output.root
+      tracking_uri: null
+      experiment_name: hackathon-${oc.env:USER}
+      terminal: True
+      system: True

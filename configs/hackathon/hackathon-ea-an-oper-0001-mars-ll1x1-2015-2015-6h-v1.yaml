@@ -1,0 +1,42 @@
+description: 'ERA5 2015-2015 from the hackathon NetCDFs: 8 surface + 5x6 pressure-level
+  fields + tp (diagnostic) + 9 forcings, 6h.'
+
+name: hackathon-ea-an-oper-0001-mars-ll1x1-2015-2015-6h-v1
+
+licence: CC-BY-4.0
+
+dates:
+  start: '2015-01-01 00:00:00'
+  end: '2015-12-31 18:00:00'
+  frequency: 6h
+
+build:
+  group_by: monthly
+
+input:
+  join:
+  - netcdf:
+      path: path/to/data/folder/pl/hackathon-ea-an-oper-0001-mars-ll1x1-201501-201512-6h_pl.nc
+  - pipe:
+    - netcdf:
+        path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201501-201512-6h_sfc.nc
+    - rename:
+        param:
+          u10: 10u
+          v10: 10v
+          d2m: 2d
+          t2m: 2t
+  - netcdf:
+      path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201501-201512-6h_acc.nc
+  - constants:
+      template: ${input.join.0.netcdf}
+      param:
+      - cos_latitude
+      - cos_longitude
+      - sin_latitude
+      - sin_longitude
+      - cos_julian_day
+      - cos_local_time
+      - sin_julian_day
+      - sin_local_time
+      - insolation

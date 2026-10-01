@@ -1,0 +1,126 @@
+description: 'ERA5 2010-2014 from 1x1 NetCDFs, interpolated to O96 grid. 
+  8 surface + 5x6 pressure-levelb fields + tp (diagnostic) + 9 computed forcings, 6h.'
+
+name: hackathon-ea-an-oper-0001-mars-o96-2011-2014-6h-v1
+
+licence: CC-BY-4.0
+
+dates:
+  start: '2010-01-01 00:00:00'
+  end: '2014-12-31 18:00:00'
+  frequency: 6h
+
+build:
+  group_by: monthly
+
+input:
+  join:
+  - pipe:
+    - concat:
+      - dates:
+          start: '2010-01-01 00:00:00'
+          end: '2010-12-31 18:00:00'
+          frequency: 6h
+        join:
+        - netcdf:
+            path: path/to/data/folder/pl/hackathon-ea-an-oper-0001-mars-ll1x1-201001-201012-6h_pl.nc
+        - pipe:
+          - netcdf:
+              path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201001-201012-6h_sfc.nc
+          - rename:
+              param:
+                u10: 10u
+                v10: 10v
+                d2m: 2d
+                t2m: 2t
+        - netcdf:
+            path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201001-201012-6h_acc.nc
+      - dates:
+          start: '2011-01-01 00:00:00'
+          end: '2011-12-31 18:00:00'
+          frequency: 6h
+        join:
+        - netcdf:
+            path: path/to/data/folder/pl/hackathon-ea-an-oper-0001-mars-ll1x1-201101-201112-6h_pl.nc
+        - pipe:
+          - netcdf:
+              path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201101-201112-6h_sfc.nc
+          - rename:
+              param:
+                u10: 10u
+                v10: 10v
+                d2m: 2d
+                t2m: 2t
+        - netcdf:
+            path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201101-201112-6h_acc.nc
+      - dates:
+          start: '2012-01-01 00:00:00'
+          end: '2012-12-31 18:00:00'
+          frequency: 6h
+        join:
+        - netcdf:
+            path: path/to/data/folder/pl/hackathon-ea-an-oper-0001-mars-ll1x1-201201-201212-6h_pl.nc
+        - pipe:
+          - netcdf:
+              path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201201-201212-6h_sfc.nc
+          - rename:
+              param:
+                u10: 10u
+                v10: 10v
+                d2m: 2d
+                t2m: 2t
+        - netcdf:
+            path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201201-201212-6h_acc.nc
+      - dates:
+          start: '2013-01-01 00:00:00'
+          end: '2013-12-31 18:00:00'
+          frequency: 6h
+        join:
+        - netcdf:
+            path: path/to/data/folder/pl/hackathon-ea-an-oper-0001-mars-ll1x1-201301-201312-6h_pl.nc
+        - pipe:
+          - netcdf:
+              path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201301-201312-6h_sfc.nc
+          - rename:
+              param:
+                u10: 10u
+                v10: 10v
+                d2m: 2d
+                t2m: 2t
+        - netcdf:
+            path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201301-201312-6h_acc.nc
+      - dates:
+          start: '2014-01-01 00:00:00'
+          end: '2014-12-31 18:00:00'
+          frequency: 6h
+        join:
+        - netcdf:
+            path: path/to/data/folder/pl/hackathon-ea-an-oper-0001-mars-ll1x1-201401-201412-6h_pl.nc
+        - pipe:
+          - netcdf:
+              path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201401-201412-6h_sfc.nc
+          - rename:
+              param:
+                u10: 10u
+                v10: 10v
+                d2m: 2d
+                t2m: 2t
+        - netcdf:
+            path: path/to/data/folder/sl/hackathon-ea-an-oper-0001-mars-ll1x1-201401-201412-6h_acc.nc
+    - regrid:
+        method: nearest
+        in_grid: [1, 1]
+        out_grid: O96
+  # Forcings computed on the regridded O96 points
+  - constants:
+      template: ${input.join.0.pipe}
+      param:
+      - cos_latitude
+      - cos_longitude
+      - sin_latitude
+      - sin_longitude
+      - cos_julian_day
+      - cos_local_time
+      - sin_julian_day
+      - sin_local_time
+      - insolation

@@ -1,0 +1,37 @@
+name: demo-ea-an-oper-0001-mars-o48-202001-202006-6h-pl-v1
+
+description: Pressure-level variable subset (t, q, u, v, z at 1000/850/500/250 hPa) of demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1
+
+attribution: ECMWF/C3S
+
+licence: CC-BY-4.0
+
+dates:
+  start: '2020-01-01T00:00:00'
+  end: '2020-06-30T18:00:00'
+  frequency: 6h
+
+input:
+  anemoi-dataset:
+    dataset: data/demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1.zarr
+    select:
+      - t_1000
+      - t_850
+      - t_500
+      - t_250
+      - q_1000
+      - q_850
+      - q_500
+      - q_250
+      - u_1000
+      - u_850
+      - u_500
+      - u_250
+      - v_1000
+      - v_850
+      - v_500
+      - v_250
+      - z_1000
+      - z_850
+      - z_500
+      - z_250

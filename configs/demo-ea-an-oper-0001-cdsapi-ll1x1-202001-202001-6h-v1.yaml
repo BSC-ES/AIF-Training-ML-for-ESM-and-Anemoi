@@ -1,0 +1,54 @@
+name: demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1
+
+description: Small dataset for training purposes, created from ERA5 data in NetCDF format (1x1 degree regular lat/lon)
+
+attribution: ECMWF/C3S
+
+license: CC-BY-4.0
+
+dates:
+  start: 2020-01-01T00:00:00
+  end: 2020-01-31T18:00:00
+  frequency: 6h
+
+build:
+  group_by: daily
+
+statistics:
+  allow_nans: true
+
+input:
+  join:
+  # NetCDF containing pressure level variables
+  - netcdf:
+      path: data/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1_pl.nc
+      options:
+        drop_variables: [expver]
+  # NetCDF containing surface variables: NetCDF names -> anemoi (GRIB) names
+  - pipe:
+    - netcdf:
+        path: data/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1_sfc.nc
+        options:
+          drop_variables: [expver]
+    - rename:
+        param:
+          u10: 10u
+          v10: 10v
+          d2m: 2d
+          t2m: 2t
+  # 6h accumulations (cp, tp) precomputed from the hourly NetCDF: `accumulate` only reads GRIB
+  - netcdf:
+      path: data/derived/module-02/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1_acc6h.nc
+  # constant forcings
+  - constants:
+      param:
+      - cos_latitude
+      - cos_longitude
+      - sin_latitude
+      - sin_longitude
+      - cos_julian_day
+      - cos_local_time
+      - sin_julian_day
+      - sin_local_time
+      - insolation
+      template: ${input.join.0.netcdf}
