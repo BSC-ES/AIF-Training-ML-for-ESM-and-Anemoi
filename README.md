@@ -4,7 +4,7 @@ Open material of the hands-on course "[Machine Learning for Earth System Modelin
 
 ## About
 
-The course introduces machine learning for Earth system modeling and takes participants from raw geospatial data all the way to a trained forecasting model, using ECMWF's [Anemoi](https://github.com/ecmwf/anemoi-core) framework. Over four days it covers:
+The course introduces machine learning for Earth system modeling and takes participants from raw geospatial data all the way to a trained forecasting model, using ECMWF's [Anemoi](https://github.com/ecmwf/anemoi) framework. Over four days it covers:
 
 - requesting and downloading data from the Copernicus Climate Data Store (CDS);
 - Earth system data formats and the creation of AI-ready (ARCO Zarr) datasets;
@@ -118,3 +118,7 @@ Extract the hackathon record into `data/hackathon/`, keeping its `pl/` and `sl/`
 ## Modules 3–4
 
 Modules 3–4 (`notebooks/module-03-04/`) train a small Anemoi model and run inference, so notebooks 2 and 3 need a CUDA GPU. Run the notebooks in order, 0 to 3; `extra/` holds optional background notebooks. Inputs are read from `data/module-03_04/` (it must contain `era5-o48-2020-2021-6h-v0.zarr` and `grids/grid-o32.npz`) and outputs are written to `output/module-03_04/`. To use other locations, set `ANEMOI_COURSE_DATA` and `ANEMOI_COURSE_OUTPUT` before launching JupyterLab.
+
+## License
+
+The code, configuration files and notebooks in this repository are released under the [Apache License 2.0](LICENSE). The demo and hackathon data are derived from ERA5 and CERRA (produced by ECMWF for the Copernicus Climate Change Service) and CMIP6, and remain subject to the terms of their original providers; keep the attribution when redistributing them. Anemoi and the other dependencies keep their own licenses.
