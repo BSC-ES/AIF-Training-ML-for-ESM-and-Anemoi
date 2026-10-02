@@ -13,7 +13,7 @@ dates:
 
 input:
   anemoi-dataset:
-    dataset: data/demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1.zarr
+    dataset: data/module-01_02/demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1.zarr
     select:
       - t_1000
       - t_850

@@ -120,7 +120,17 @@ Extract `pl.zip` and `sl.zip` from the project root; they unpack into `data/hack
 
 ## Modules 3–4
 
-Modules 3–4 (`notebooks/module-03-04/`) train a small Anemoi model and run inference, so notebooks 2 and 3 need a CUDA GPU. Run the notebooks in order, 0 to 3; `extra/` holds optional background notebooks. Inputs are read from `data/module-03_04/` (it must contain `era5-o48-2020-2021-6h-v0.zarr` and `grids/grid-o32.npz`) and outputs are written to `output/module-03_04/`. To use other locations, set `ANEMOI_COURSE_DATA` and `ANEMOI_COURSE_OUTPUT` before launching JupyterLab.
+Modules 3–4 (`notebooks/module-03-04/`) train a small Anemoi model and run inference. Notebooks 0 and 1 run on CPU; **notebooks 2 and 3 need an NVIDIA GPU** (a driver supporting CUDA 12.8 or newer; on x86_64 Linux the pinned PyTorch wheels bring their own CUDA runtime). The training runs are tiny (about half a minute each in the saved H100 run), so a modest GPU should be enough.
+
+```bash
+uv sync --group module-03-04
+unzip course-module-03_04.zip      # from the repository root, after downloading the course record (see Demo Data)
+uv run jupyter lab                 # open notebooks/module-03-04/ and choose the python3 kernel
+```
+
+Run the notebooks in order, 0 to 3. Each one starts with a "Before you start" box and a setup cell that checks the environment, the data and (for 2 and 3) the GPU, and tells you what to fix if something is missing. Inputs are read from `data/module-03_04/` (it must contain `era5-o48-2020-2021-6h-v0.zarr` and `grids/grid-o32.npz`) and outputs are written to `output/module-03_04/`. To use other locations, set `ANEMOI_COURSE_DATA` and `ANEMOI_COURSE_OUTPUT` before launching JupyterLab.
+
+`extra/` holds optional background notebooks. `gnn_from_scratch.ipynb` needs no course data. The `lecture-part-*.ipynb` notebooks are the lecture's worked example, kept as **read-only reference**: they were executed with a different Anemoi release and need data that is not included in the Zenodo records.
 
 ## License
 

@@ -21,13 +21,13 @@ input:
   join:
   # NetCDF containing pressure level variables
   - netcdf:
-      path: data/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1_pl.nc
+      path: data/module-01_02/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1_pl.nc
       options:
         drop_variables: [expver]
   # NetCDF containing surface variables: NetCDF names -> anemoi (GRIB) names
   - pipe:
     - netcdf:
-        path: data/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1_sfc.nc
+        path: data/module-01_02/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1/demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1_sfc.nc
         options:
           drop_variables: [expver]
     - rename:

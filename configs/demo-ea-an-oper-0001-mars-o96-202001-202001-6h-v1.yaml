@@ -21,10 +21,10 @@ input:
   join:
   # grib containing surface variables
   - grib:
-      path: data/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1_sfc.grib
+      path: data/module-01_02/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1_sfc.grib
   # grib containing pressure level variables:
   - grib:
-      path: data/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1_pl.grib
+      path: data/module-01_02/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1_pl.grib
   # grib containing accumulated variables:
   - accumulate:
       period: 6h
@@ -34,7 +34,7 @@ input:
           stream: oper
       source:
         grib-index:
-          indexdb: data/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1_acc_index.sqlite
+          indexdb: data/module-01_02/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1/demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1_acc_index.sqlite
   # constant forcings
   - constants:
       param:

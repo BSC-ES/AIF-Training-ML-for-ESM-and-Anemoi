@@ -17,10 +17,10 @@ input:
   join:
   # grib containing surface variables
   - grib:
-      path: data/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_sfc.grib
+      path: data/module-01_02/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_sfc.grib
   # grib containing pressure level variables
   - grib:
-      path: data/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_pl.grib
+      path: data/module-01_02/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_pl.grib
   # grib containing accumulated variables
   - accumulate:
       period: 6h
@@ -31,7 +31,7 @@ input:
         - [18, "0-6"]
       source:
         grib-index:
-          indexdb: data/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_acc_index.sqlite
+          indexdb: data/module-01_02/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1_acc_index.sqlite
   # constant forcings
   - constants:
       param:

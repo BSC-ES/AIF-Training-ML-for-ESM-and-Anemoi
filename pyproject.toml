@@ -63,7 +63,7 @@ module-02 = [
     "ecmwf-opendata>=0.3.29",
 ]
 
-# Modules 3–4 — training and inference notebooks; exact versions of the shared MN5 course environment.
+# Modules 3–4 — training and inference notebooks; exact pinned versions (the notebooks check them in `course.preflight`).
 module-03-04 = [
     "anemoi-datasets==0.5.36",
     "anemoi-graphs==0.9.3",
