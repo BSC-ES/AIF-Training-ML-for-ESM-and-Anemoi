@@ -1,5 +1,8 @@
 # Machine Learning for Earth System Modeling: the Anemoi framework
 
+[![DOI course data](https://zenodo.org/badge/DOI/10.5281/zenodo.23099483.svg)](https://doi.org/10.5281/zenodo.23099483)
+[![DOI hackathon data](https://zenodo.org/badge/DOI/10.5281/zenodo.23099731.svg)](https://doi.org/10.5281/zenodo.23099731)
+
 Open material of the hands-on course "[Machine Learning for Earth System Modeling: the Anemoi framework](https://bsc-aifactory.eu/training/machine-learning-for-earth-system-modeling-the-anemoi-framework/)", organised by the [BSC AI Factory](https://bsc-aifactory.eu/) at the Barcelona Supercomputing Center (BSC).
 
 ## About
@@ -85,10 +88,10 @@ uv run jupyter lab
 
 The `data/` directory is not tracked in this repository. The data is published in two Zenodo records:
 
-- **Course data** (Modules 0–4): **[Zenodo — LINK TBD]**
-- **Hackathon data** (ERA5 NetCDF files, 2010–2015): **[Zenodo — LINK TBD]**. Only needed to follow the hackathon reference material.
+- **Course data** (Modules 0–4): **[doi:10.5281/zenodo.23099483](https://doi.org/10.5281/zenodo.23099483)**
+- **Hackathon data** (ERA5 NetCDF files, 2010–2015): **[doi:10.5281/zenodo.23099731](https://doi.org/10.5281/zenodo.23099731)**. Only needed to follow the hackathon reference material.
 
-Download and extract the archive into the project root so the `data/` directory sits alongside `notebooks/` and `configs/`. The notebooks read all inputs from there. Files the notebooks create (including the CDS downloads of Module 0, Notebook 1) are written to `data/derived/module-00/` and `data/derived/module-02/` (created automatically), so the downloaded inputs are never modified.
+Download the zip archives of the record(s) you need (`course-module-00.zip`, `course-module-01_02.zip`, `course-module-03_04.zip` for the course data; `pl.zip` and `sl.zip` for the hackathon data) and extract them **from the project root** (e.g. `unzip course-module-03_04.zip`). The archives already contain the `data/` prefix, so the `data/` directory ends up alongside `notebooks/` and `configs/`. The notebooks read all inputs from there. Files the notebooks create (including the CDS downloads of Module 0, Notebook 1) are written to `data/derived/module-00/` and `data/derived/module-02/` (created automatically), so the downloaded inputs are never modified.
 
 ### Course data
 
@@ -98,16 +101,16 @@ Download and extract the archive into the project root so the `data/` directory 
 | `module-03_04/era5-o48-2020-2021-6h-v0.zarr`, `module-03_04/grids/grid-o32.npz` | Modules 03–04 | ERA5 O48, 2020–2021, 6h prepared store and the O32 grid points for the hidden mesh |
 | `module-00/{ERA5,CERRA,CMIP6}/` | Module 00 (Notebooks 2–3) | Sample ERA5 and CERRA GRIB files (`ERA5-AIFTraining-M0-*.grib`, `CERRA-AIFTraining-M0-*.grib`) and a CMIP6 NetCDF — produced by Notebook 1 via the CDS API |
 | `demo-ea-an-oper-0001-mars-o48-202001-202006-6h-v1.zarr` | Modules 01, 02 | ERA5 O48, Jan–Jun 2020, 6h, 43 variables — pre-built zarr |
-| `demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1/` | Module 02 | ERA5 O96, Jan 2020, 6h — source GRIBs (sfc, pl, acc) + pre-built zarr |
-| `demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1/` | Module 02 | ERA5 1x1 regular lat/lon, Jan 2020 — source NetCDFs (`_sfc.nc`, `_pl.nc`, `_acc.nc`, hourly precipitation), no index needed |
-| `demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/` | Module 02 | CERRA 5.5 km, Jan 1–15 2020, 6h — source GRIBs + pre-built zarr |
-| `demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200107-3h-v1/` | Module 02 | CERRA 5.5 km, Jan 1–7 2020, 3h — source GRIBs + pre-built zarr |
+| `demo-ea-an-oper-0001-mars-o96-202001-202001-6h-v1/` | Module 02 | ERA5 O96, Jan 2020, 6h — source GRIBs (sfc, pl, acc); the notebook builds the zarr |
+| `demo-ea-an-oper-0001-cdsapi-ll1x1-202001-202001-6h-v1/` | Module 02 | ERA5 1x1 regular lat/lon, Jan 2020 — source NetCDFs (`_sfc.nc`, `_pl.nc`, `_acc.nc`, hourly precipitation), no index needed; the notebook builds the zarr |
+| `demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200115-6h-v1/` | Module 02 | CERRA 5.5 km, Jan 1–15 2020, 6h — source GRIBs; the notebook builds the zarr |
+| `demo-cerra-rr-an-oper-0001-cdsapi-5p5km-20200101-20200107-3h-v1/` | Module 02 | CERRA 5.5 km, Jan 1–7 2020, 3h — source GRIBs; the notebook builds the zarr |
 
 Each directory containing source GRIBs (the NetCDF directory holds the same three groups as `.nc` files) includes three files (`_sfc.grib`, `_pl.grib`, `_acc.grib`) and the corresponding SQLite grib-index (`_acc_index.sqlite`). The Module 02 notebook rebuilds these indexes from scratch as part of the demo.
 
 ### Hackathon data
 
-Extract the hackathon record into `data/hackathon/`, keeping its `pl/` and `sl/` subfolders. These are the yearly ERA5 files (regular 1° lat-lon, 6-hourly) that the hackathon dataset recipes in `configs/hackathon/` read; point the `path/to/data/folder` placeholders there to this folder.
+Extract `pl.zip` and `sl.zip` from the project root; they unpack into `data/hackathon/pl/` and `data/hackathon/sl/`. These are the yearly ERA5 files (regular 1° lat-lon, 6-hourly) that the hackathon dataset recipes in `configs/hackathon/` read; point the `path/to/data/folder` placeholders there to this folder.
 
 | Files | Description |
 |---|---|
@@ -121,4 +124,4 @@ Modules 3–4 (`notebooks/module-03-04/`) train a small Anemoi model and run inf
 
 ## License
 
-The code, configuration files and notebooks in this repository are released under the [Apache License 2.0](LICENSE). The demo and hackathon data are derived from ERA5 and CERRA (produced by ECMWF for the Copernicus Climate Change Service) and CMIP6, and remain subject to the terms of their original providers; keep the attribution when redistributing them. Anemoi and the other dependencies keep their own licenses.
+The code, configuration files and notebooks in this repository are released under the [Apache License 2.0](LICENSE). The demo and hackathon data are derived from ERA5 and CERRA (produced by ECMWF for the Copernicus Climate Change Service) and CMIP6, and remain subject to the terms of their original providers; keep the attribution when redistributing them. The Zenodo records are licensed [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) (course data, because of the CMIP6 EC-Earth3-CC files) and [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (hackathon data), and contain modified Copernicus Climate Change Service information. Anemoi and the other dependencies keep their own licenses.
