@@ -1,6 +1,6 @@
 # anemoi-inference config for the hackathon notebook. The notebook sets the three environment variables below
 # and overrides `date` and `lead_time` on the command line:
-#   anemoi-inference run configs/model-inference.yaml date=2015-10-25T06:00:00 lead_time=48
+#   anemoi-inference run configs/hackathon/model-inference.yaml date=2015-10-25T06:00:00 lead_time=48
 #
 # Model checkpoint to use for inference.
 checkpoint: ${oc.env:ANEMOI_CHECKPOINT}
