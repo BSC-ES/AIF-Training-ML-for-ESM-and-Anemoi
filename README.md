@@ -18,6 +18,8 @@ The course introduces machine learning for Earth system modeling and takes parti
 
 It is aimed at scientists with intermediate expertise: comfortable programming in Python and familiar with weather and climate concepts (numerical weather prediction, reanalysis, GRIB/NetCDF, ERA5). A CDS account is needed to run the data-download notebook. The course was given in Barcelona by Joan Vedrí, Pai Peng Wang and Filippo Dainelli (BSC).
 
+The notebooks and files in this repository are complemented by the course slides, available in a [B2DROP folder](https://b2drop.bsc.es/nextcloud/s/HPeXrymTrAE6NNZ), and by the recordings of the classes, which will be published soon.
+
 ## Curriculum
 
 | Day | Module | Topic | Notebook |
@@ -31,10 +33,34 @@ It is aimed at scientists with intermediate expertise: comfortable programming i
 
 ## What is in this repository
 
-The notebooks in this repository are the ones used during the course; the lecture slides are not included.
+The notebooks in this repository are the ones used during the course.
 
 - **Modules 0, 1 and 2** can be replicated on a laptop. Download the demo data (see [Demo Data](#demo-data)) and save it in the `data/` folder in the root directory of the repository, then install the environment and run the notebooks.
 - **Modules 3 and 4** (`notebooks/module-03_04/`) train a small Anemoi model and run inference, so you need a GPU (CUDA) to run notebooks 2 and 3.
+
+### Repository structure
+
+```text
+.
+├── notebooks/
+│   ├── module-00/                 Module 0: download, inspect and harmonise raw data (3 notebooks)
+│   ├── module-01.ipynb            Module 1: Anemoi introduction
+│   ├── module-02.ipynb            Module 2: anemoi-datasets
+│   ├── module-03_04/              Modules 3–4: graph, training and inference (notebooks 0–3)
+│   │   ├── course.py              environment checks used by the setup cells
+│   │   └── extra/                 optional resources for ML beginners
+│   └── hackathon_inference/       hackathon inference notebook and its plotting helpers
+├── configs/
+│   ├── module-02/                 anemoi-datasets recipes used in Module 2
+│   ├── module-03_04/              Hydra configs for graph, training and inference
+│   └── hackathon/                 hackathon reference recipes and configs
+├── scripts/hackathon-*/           hackathon SLURM scripts (reference only)
+├── graphs/o96_example.pt          pre-built graph loaded in Module 1
+├── data/                          not tracked: downloaded from Zenodo (see Demo Data)
+├── output/                        not tracked: files written by Modules 3–4
+├── pyproject.toml, uv.lock        environment (one dependency group per module)
+└── LICENSE
+```
 
 ### Hackathon reference material
 
@@ -136,7 +162,7 @@ uv run jupyter lab                 # open notebooks/module-03_04/ and choose the
 
 Run the notebooks in order, 0 to 3. Each one starts with a "Before you start" box and a setup cell that checks the environment, the data and (for 2 and 3) the GPU, and tells you what to fix if something is missing. Inputs are read from `data/module-03_04/` (it must contain `era5-o48-2020-2021-6h-v0.zarr` and `grids/grid-o32.npz`) and outputs are written to `output/module-03_04/`. To use other locations, set `ANEMOI_COURSE_DATA` and `ANEMOI_COURSE_OUTPUT` before launching JupyterLab.
 
-`extra/` holds optional background notebooks. `gnn_from_scratch.ipynb` needs no course data. The `lecture-part-*.ipynb` notebooks are the lecture's worked example, kept as **read-only reference**: they were executed with a different Anemoi release and need data that is not included in the Zenodo records.
+`extra/` holds optional additional resources for ML beginners, to read alongside Modules 3 and 4 (you can complete the modules without them). `gnn_from_scratch.ipynb` introduces message passing in plain PyTorch and needs no course data. The `lecture-part-*.ipynb` notebooks are the lecture's worked example, kept as **read-only reference**: they were executed with a different Anemoi release and need data that is not included in the Zenodo records.
 
 ## License
 
