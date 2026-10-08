@@ -1,0 +1,39 @@
+# Used by both anemoi-graphs create and the training graph config group.
+# Graph construction changes spatial connections; it does not advance time.
+overwrite: false
+nodes:
+  data:
+    node_builder:
+      _target_: anemoi.graphs.nodes.AnemoiDatasetNodes
+      dataset: ${oc.env:ANEMOI_COURSE_DATA}/era5-o48-2020-2021-6h-v0.zarr
+    attributes:
+      area_weight:
+        _target_: anemoi.graphs.nodes.attributes.SphericalAreaWeights
+        norm: unit-max
+        fill_value: 0
+  hidden:
+    node_builder:
+      _target_: anemoi.graphs.nodes.NPZFileNodes
+      npz_file: ${oc.env:ANEMOI_COURSE_DATA}/grids/grid-o32.npz
+      lat_key: latitudes
+      lon_key: longitudes
+edges:
+  - source_name: data
+    target_name: hidden
+    edge_builders:
+      - _target_: anemoi.graphs.edges.KNNEdges
+        num_nearest_neighbours: 4
+    attributes: &edge_attributes
+      edge_length:
+        _target_: anemoi.graphs.edges.attributes.EdgeLength
+        norm: unit-std
+      edge_dirs:
+        _target_: anemoi.graphs.edges.attributes.EdgeDirection
+        norm: unit-std
+  - source_name: hidden
+    target_name: data
+    edge_builders:
+      - _target_: anemoi.graphs.edges.KNNEdges
+        num_nearest_neighbours: 3
+    attributes: *edge_attributes
+post_processors: []

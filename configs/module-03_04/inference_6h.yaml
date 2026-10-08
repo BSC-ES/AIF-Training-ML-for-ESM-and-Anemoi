@@ -1,0 +1,14 @@
+# The checkpoint supplies the model, variable roles, normalization and timestep.
+checkpoint: ${oc.env:ANEMOI_CHECKPOINT}
+date: "2021-07-01T06:00:00"
+lead_time: 6
+input:
+  dataset: ${oc.env:ANEMOI_COURSE_DATA}/era5-o48-2020-2021-6h-v0.zarr
+output:
+  netcdf:
+    path: ${oc.env:ANEMOI_COURSE_OUTPUT}/forecast-6h.nc
+    variables: [2t, z_500, t_850]
+write_initial_state: false
+device: cuda
+precision: "32"
+allow_nans: false

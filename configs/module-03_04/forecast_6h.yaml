@@ -1,0 +1,135 @@
+# Course-specific choices. Library defaults are loaded from the installed Anemoi
+# package, whose source and licence remain with that dependency.
+defaults:
+  - data: zarr
+  - dataloader: native_grid
+  - diagnostics: evaluation
+  - system: example
+  - model: transformer
+  - task: forecaster
+  - training: single
+  - graph: o48_o32
+  - override training/scalers: course_uniform
+  - _self_
+
+config_validation: True
+
+system:
+  input:
+    dataset: ${oc.env:ANEMOI_COURSE_DATA}/era5-o48-2020-2021-6h-v0.zarr
+    graph: ${oc.env:ANEMOI_COURSE_OUTPUT}/graphs/o48-o32.pt
+    truncation: null
+    truncation_inv: null
+  output:
+    root: ${oc.env:ANEMOI_COURSE_OUTPUT}
+  hardware:
+    accelerator: gpu
+    num_nodes: 1
+    num_gpus_per_node: 1
+    num_gpus_per_model: 1
+
+data:
+  resolution: o48
+  frequency: 6h
+  datasets:
+    data:
+      diagnostic: []
+      processors:
+        normalizer:
+          config:
+            std: []
+
+dataloader:
+  dataset:
+    dataset: ${system.input.dataset}
+    select: [z_1000, z_500, 2t, t_850, tcw, z_250, lsm, z, cos_latitude, cos_longitude, sin_latitude, sin_longitude, cos_julian_day, cos_local_time, sin_julian_day, sin_local_time, insolation, sdor, slor]
+  training:
+    datasets:
+      data:
+        start: 2020-01-01
+        end: 2020-12-31
+  validation:
+    datasets:
+      data:
+        start: 2021-01-01
+        end: 2021-06-30
+  test:
+    datasets:
+      data:
+        start: 2021-07-01
+        end: 2021-12-31
+  batch_size:
+    training: 1
+    validation: 1
+  num_workers:
+    training: 2
+    validation: 2
+  limit_batches:
+    training: 4
+    validation: 1
+
+
+task:
+  multistep_input: 2
+  multistep_output: 1
+  timestep: 6h
+  rollout:
+    start: 1
+    maximum: 1
+    epoch_increment: 0
+  validation_rollout: 1
+
+model:
+  num_channels: 64
+  compile: []
+  bounding: []
+  processor:
+    num_layers: 4
+    num_chunks: 2
+    num_heads: 4
+    attention_implementation: scaled_dot_product_attention
+  encoder:
+    num_heads: 4
+    graph_attention_backend: pyg
+  decoder:
+    num_heads: 4
+    graph_attention_backend: pyg
+    initialise_data_extractor_zero: True
+
+training:
+  max_steps: 16
+  max_epochs: null
+  precision: 32-true
+  num_sanity_val_steps: 1
+  optimization:
+    lr: 1.e-3
+    lr_scheduler:
+      warmup_t: 2
+  training_loss:
+    datasets:
+      data:
+        _target_: anemoi.training.losses.MSELoss
+        scalers: [general_variable, node_weights]
+        ignore_nans: False
+  metrics:
+    datasets:
+      data: [z_500, t_850, 2t]
+
+diagnostics:
+  callbacks: []
+  plot:
+    callbacks: []
+  enable_progress_bar: False
+  checkpoint:
+    every_n_minutes:
+      save_frequency: null
+    every_n_epochs:
+      num_models_saved: 1
+  log:
+    interval: 1
+    mlflow:
+      enabled: True
+      offline: True
+      tracking_uri: null
+      experiment_name: ${oc.env:USER,student}-forecast-6h
+      system: True

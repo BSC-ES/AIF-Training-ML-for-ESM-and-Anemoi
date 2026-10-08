@@ -22,11 +22,11 @@ It is aimed at scientists with intermediate expertise: comfortable programming i
 
 | Day | Module | Topic | Notebook |
 |-----|--------|-------|----------|
-| 1 | 0 | Earth science data: download, preprocessing and ML-readiness | `notebooks/Module_0/` |
+| 1 | 0 | Earth science data: download, preprocessing and ML-readiness | `notebooks/module-00/` |
 | 2 | 1 | Anemoi framework: introduction and package architecture | `notebooks/module-01.ipynb` |
 | 2 | 2 | anemoi-datasets: creating and working with training datasets | `notebooks/module-02.ipynb` |
-| 3 | 3 | anemoi-core: graph construction, model architecture and training | `notebooks/module-03-04/` |
-| 3 | 4 | anemoi-inference: running forecast rollouts and visualising output | `notebooks/module-03-04/` |
+| 3 | 3 | anemoi-core: graph construction, model architecture and training | `notebooks/module-03_04/` |
+| 3 | 4 | anemoi-inference: running forecast rollouts and visualising output | `notebooks/module-03_04/` |
 | 4 | – | Hackathon: the complete pipeline on a dataset built by the participants | see [Hackathon reference material](#hackathon-reference-material) |
 
 ## What is in this repository
@@ -34,7 +34,7 @@ It is aimed at scientists with intermediate expertise: comfortable programming i
 The notebooks in this repository are the ones used during the course; the lecture slides are not included.
 
 - **Modules 0, 1 and 2** can be replicated on a laptop. Download the demo data (see [Demo Data](#demo-data)) and save it in the `data/` folder in the root directory of the repository, then install the environment and run the notebooks.
-- **Modules 3 and 4** (`notebooks/module-03-04/`) train a small Anemoi model and run inference, so you need a GPU (CUDA) to run notebooks 2 and 3.
+- **Modules 3 and 4** (`notebooks/module-03_04/`) train a small Anemoi model and run inference, so you need a GPU (CUDA) to run notebooks 2 and 3.
 
 ### Hackathon reference material
 
@@ -126,12 +126,12 @@ Extract `pl.zip` and `sl.zip` from the project root; they unpack into `data/hack
 
 ## Modules 3–4
 
-Modules 3–4 (`notebooks/module-03-04/`) train a small Anemoi model and run inference. Notebooks 0 and 1 run on CPU; **notebooks 2 and 3 need an NVIDIA GPU** (a driver supporting CUDA 12.8 or newer; on x86_64 Linux the pinned PyTorch wheels bring their own CUDA runtime). The training runs are tiny (about half a minute each in the saved H100 run), so a modest GPU should be enough.
+Modules 3–4 (`notebooks/module-03_04/`) train a small Anemoi model and run inference. Notebooks 0 and 1 run on CPU; **notebooks 2 and 3 need an NVIDIA GPU** (a driver supporting CUDA 12.8 or newer; on x86_64 Linux the pinned PyTorch wheels bring their own CUDA runtime). The training runs are tiny (about half a minute each in the saved H100 run), so a modest GPU should be enough.
 
 ```bash
 uv sync --group module-03-04
 unzip course-module-03_04.zip      # from the repository root, after downloading the course record (see Demo Data)
-uv run jupyter lab                 # open notebooks/module-03-04/ and choose the python3 kernel
+uv run jupyter lab                 # open notebooks/module-03_04/ and choose the python3 kernel
 ```
 
 Run the notebooks in order, 0 to 3. Each one starts with a "Before you start" box and a setup cell that checks the environment, the data and (for 2 and 3) the GPU, and tells you what to fix if something is missing. Inputs are read from `data/module-03_04/` (it must contain `era5-o48-2020-2021-6h-v0.zarr` and `grids/grid-o32.npz`) and outputs are written to `output/module-03_04/`. To use other locations, set `ANEMOI_COURSE_DATA` and `ANEMOI_COURSE_OUTPUT` before launching JupyterLab.
