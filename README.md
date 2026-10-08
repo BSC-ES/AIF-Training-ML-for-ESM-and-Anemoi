@@ -164,6 +164,10 @@ Run the notebooks in order, 0 to 3. Each one starts with a "Before you start" bo
 
 `extra/` holds optional additional resources for ML beginners, to read alongside Modules 3 and 4 (you can complete the modules without them). `gnn_from_scratch.ipynb` introduces message passing in plain PyTorch and needs no course data. The `lecture-part-*.ipynb` notebooks are the lecture's worked example, kept as **read-only reference**: they were executed with a different Anemoi release and need data that is not included in the Zenodo records.
 
+## Contributing
+
+If you find an error or run into a problem anywhere in the course material (notebooks, configs, scripts, data, slides, class recordings or this README), please [open an issue](https://github.com/BSC-ES/AIF-Training-ML-for-ESM-and-Anemoi/issues).
+
 ## License
 
 The code, configuration files and notebooks in this repository are released under the [Apache License 2.0](LICENSE). The demo and hackathon data are derived from ERA5 and CERRA (produced by ECMWF for the Copernicus Climate Change Service) and CMIP6, and remain subject to the terms of their original providers; keep the attribution when redistributing them. The Zenodo records are licensed [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (hackathon data), and contain modified Copernicus Climate Change Service information. Anemoi and the other dependencies keep their own licenses.
