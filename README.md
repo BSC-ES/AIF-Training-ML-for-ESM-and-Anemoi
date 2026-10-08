@@ -38,7 +38,7 @@ The notebooks in this repository are the ones used during the course; the lectur
 
 ### Hackathon reference material
 
-The repository also contains examples of how the Anemoi pipeline was set up for the hackathon: dataset creation (`configs/hackathon/*.yaml`, `scripts/hackathon-dataset/`), graph construction, training (`configs/hackathon/`, `scripts/hackathon-training/`) and inference (`notebooks/hackathon_inference.ipynb`, `configs/hackathon/model-inference.yaml`). They are meant as a **reference** to learn from and adapt. They are **not** ready-to-run scripts or ready-to-use Anemoi configurations: they contain placeholder paths (`path/to/data/folder`, `path/to/output/folder`), the scheduler settings of the SLURM scripts are left as comments to fill in for your own cluster, and they were developed for the specific HPC environment of the course.
+The repository also contains examples of how the Anemoi pipeline was set up for the hackathon: dataset creation (`configs/hackathon/*.yaml`, `scripts/hackathon-dataset/`), graph construction, training (`configs/hackathon/`, `scripts/hackathon-training/`) and inference (`notebooks/hackathon_inference/hackathon_inference.ipynb`, `configs/hackathon/hackathon_inference.yaml`). They are meant as a **reference** to learn from and adapt. They are **not** ready-to-run scripts or ready-to-use Anemoi configurations: they contain placeholder paths (`path/to/data/folder`, `path/to/output/folder`), the scheduler settings of the SLURM scripts are left as comments to fill in for your own cluster, and they were developed for the specific HPC environment of the course.
 
 ## Environment Setup
 
@@ -60,7 +60,13 @@ pip install uv
 
 **2. Clone the repository and install the module environment**
 
-Each module has its own dependency group. Install only the one you need (a plain `uv sync` installs all of them):
+Each module has its own dependency group. To install all of them at once (a plain `uv sync` does the same):
+
+```bash
+uv sync --all-groups
+```
+
+Or install only the one you need:
 
 ```bash
 # Module 0 — Earth science data download and preprocessing
@@ -134,4 +140,4 @@ Run the notebooks in order, 0 to 3. Each one starts with a "Before you start" bo
 
 ## License
 
-The code, configuration files and notebooks in this repository are released under the [Apache License 2.0](LICENSE). The demo and hackathon data are derived from ERA5 and CERRA (produced by ECMWF for the Copernicus Climate Change Service) and CMIP6, and remain subject to the terms of their original providers; keep the attribution when redistributing them. The Zenodo records are licensed [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) (course data, because of the CMIP6 EC-Earth3-CC files) and [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (hackathon data), and contain modified Copernicus Climate Change Service information. Anemoi and the other dependencies keep their own licenses.
+The code, configuration files and notebooks in this repository are released under the [Apache License 2.0](LICENSE). The demo and hackathon data are derived from ERA5 and CERRA (produced by ECMWF for the Copernicus Climate Change Service) and CMIP6, and remain subject to the terms of their original providers; keep the attribution when redistributing them. The Zenodo records are licensed [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (hackathon data), and contain modified Copernicus Climate Change Service information. Anemoi and the other dependencies keep their own licenses.

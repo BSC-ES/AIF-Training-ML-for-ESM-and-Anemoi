@@ -10,11 +10,6 @@
 #SBATCH --cpus-per-task 20
 #SBATCH --gres gpu:1
 
-# Submit from your home-dir repo clone
-#   cd ~/climate-data-ai-anemoi
-#   mkdir -p ~/logs
-#   sbatch scripts/mn5_jupyterlab_hackathon_inference.sh
-
 set -euo pipefail
 
 port=$((20000 + SLURM_JOB_ID % 20000))
